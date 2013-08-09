@@ -13,6 +13,7 @@
 @property (nonatomic, assign) BOOL showResetButton;
 @property (nonatomic, assign) BOOL showMilliseconds;
 @property (nonatomic, readonly) BOOL running;
+@property (nonatomic, assign) BOOL enabled;
 
 -(void)setTarget:(id)target action:(SEL)action;
 

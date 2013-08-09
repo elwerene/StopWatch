@@ -112,6 +112,14 @@
     }
 }
 
+-(void)setEnabled:(BOOL)enabled {
+    if (_enabled != enabled) {
+        _enabled = enabled;
+        toggleButton.enabled = enabled;
+        resetButton.enabled = enabled;
+    }
+}
+
 #pragma mark - update
 
 -(void)update {
