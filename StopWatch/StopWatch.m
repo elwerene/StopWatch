@@ -54,11 +54,11 @@
     label = [[UILabel alloc] init];
     [self addSubview:label];
     
-    toggleButton = [BButton awesomeButtonWithOnlyIcon:FAIconPlay type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
+    toggleButton = [BButton awesomeButtonWithOnlyIcon:FAPlay type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
     [toggleButton addTarget:self action:@selector(toggle) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:toggleButton];
     
-    resetButton = [BButton awesomeButtonWithOnlyIcon:FAIconRemoveSign color:[UIColor redColor] style:BButtonStyleBootstrapV3];
+    resetButton = [BButton awesomeButtonWithOnlyIcon:FATimes color:[UIColor redColor] style:BButtonStyleBootstrapV3];
     [resetButton addTarget:self action:@selector(reset) forControlEvents:UIControlEventTouchUpInside];
     self.showResetButton = YES;
     
@@ -189,9 +189,9 @@
     
     [toggleButton removeFromSuperview];
     if (self.running == YES) {
-        toggleButton = [BButton awesomeButtonWithOnlyIcon:FAIconPause type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
+        toggleButton = [BButton awesomeButtonWithOnlyIcon:FAPause type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
     } else {
-        toggleButton = [BButton awesomeButtonWithOnlyIcon:FAIconPlay type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
+        toggleButton = [BButton awesomeButtonWithOnlyIcon:FAPlay type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
     }
     [toggleButton addTarget:self action:@selector(toggle) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:toggleButton];
