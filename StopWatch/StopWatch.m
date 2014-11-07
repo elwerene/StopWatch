@@ -8,17 +8,17 @@
 #import "StopWatch.h"
 #import <BButton/BButton.h>
 
-@interface StopWatch() {
-    NSDateFormatter* dateFormatter;
-    NSDate* startDate;
-    NSTimer* timer;
-    UILabel* label;
-    BButton* toggleButton;
-    BButton* resetButton;
-}
+@interface StopWatch()
 
 @property (nonatomic, weak) id target;
 @property (nonatomic, assign) SEL action;
+
+@property (nonatomic, strong) NSDateFormatter* dateFormatter;
+@property (nonatomic, strong) NSDate* startDate;
+@property (nonatomic, strong) NSTimer* timer;
+@property (nonatomic, strong) UILabel* label;
+@property (nonatomic, strong) BButton* toggleButton;
+@property (nonatomic, strong) BButton* resetButton;
 
 @end
 
@@ -51,23 +51,23 @@
 }
 
 -(void)initialize {
-    label = [[UILabel alloc] init];
-    [self addSubview:label];
+    self.label = [[UILabel alloc] init];
+    [self addSubview:self.label];
     
-    toggleButton = [BButton awesomeButtonWithOnlyIcon:FAPlay type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
-    [toggleButton addTarget:self action:@selector(toggle) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:toggleButton];
+    self.toggleButton = [BButton awesomeButtonWithOnlyIcon:FAPlay type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
+    [self.toggleButton addTarget:self action:@selector(toggle) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.toggleButton];
     
-    resetButton = [BButton awesomeButtonWithOnlyIcon:FATimes color:[UIColor redColor] style:BButtonStyleBootstrapV3];
-    [resetButton addTarget:self action:@selector(reset) forControlEvents:UIControlEventTouchUpInside];
+    self.resetButton = [BButton awesomeButtonWithOnlyIcon:FATimes color:[UIColor redColor] style:BButtonStyleBootstrapV3];
+    [self.resetButton addTarget:self action:@selector(reset) forControlEvents:UIControlEventTouchUpInside];
     self.showResetButton = YES;
     
     self.target = nil;
     self.action = nil;
-    dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0.0];
-    startDate = nil;
-    timer = nil;
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0.0];
+    self.startDate = nil;
+    self.timer = nil;
     self.showMilliseconds = NO;
     [self reset];
 }
@@ -80,14 +80,14 @@
     }
     
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:time];
-    label.text = [dateFormatter stringFromDate:date];
+    self.label.text = [self.dateFormatter stringFromDate:date];
 }
 
 -(void)setShowMilliseconds:(BOOL)showMilliseconds {
     if (showMilliseconds == YES) {
-        dateFormatter.dateFormat = @"HH:mm:ss.SSS";
+        self.dateFormatter.dateFormat = @"HH:mm:ss.SSS";
     } else {
-        dateFormatter.dateFormat = @"HH:mm:ss";
+        self.dateFormatter.dateFormat = @"HH:mm:ss";
     }
     
     
@@ -99,24 +99,24 @@
 }
 
 -(BOOL)running {
-    return (timer != nil);
+    return (self.timer != nil);
 }
 
 -(void)setShowResetButton:(BOOL)showResetButton {
     _showResetButton = showResetButton;
     
-    if (showResetButton == YES && resetButton.superview == nil) {
-        [self addSubview:resetButton];
-    } else if (showResetButton == NO && resetButton.superview != nil) {
-        [resetButton removeFromSuperview];
+    if (showResetButton == YES && self.resetButton.superview == nil) {
+        [self addSubview:self.resetButton];
+    } else if (showResetButton == NO && self.resetButton.superview != nil) {
+        [self.resetButton removeFromSuperview];
     }
 }
 
 -(void)setEnabled:(BOOL)enabled {
     if (_enabled != enabled) {
         _enabled = enabled;
-        toggleButton.enabled = enabled;
-        resetButton.enabled = enabled;
+        self.toggleButton.enabled = enabled;
+        self.resetButton.enabled = enabled;
     }
 }
 
@@ -124,8 +124,8 @@
 
 -(void)update {
     NSDate* now = [NSDate date];
-    NSTimeInterval offset = [now timeIntervalSinceDate:startDate];
-    startDate = now;
+    NSTimeInterval offset = [now timeIntervalSinceDate:self.startDate];
+    self.startDate = now;
     self.time = self.time + offset;
     
     if (self.target != nil && self.action != nil) {
@@ -143,12 +143,12 @@
     
     CGFloat buttonWidth=60;
     if (self.showResetButton == YES) {
-        resetButton.frame = CGRectMake(self.bounds.size.width-buttonWidth,0,buttonWidth,self.bounds.size.height);
-        toggleButton.frame = CGRectMake(self.bounds.size.width-buttonWidth-buttonWidth-5,0,buttonWidth,self.bounds.size.height);
-        label.frame = CGRectMake(0,0,self.bounds.size.width-buttonWidth-buttonWidth-10,self.bounds.size.height);
+        self.resetButton.frame = CGRectMake(self.bounds.size.width-buttonWidth,0,buttonWidth,self.bounds.size.height);
+        self.toggleButton.frame = CGRectMake(self.bounds.size.width-buttonWidth-buttonWidth-5,0,buttonWidth,self.bounds.size.height);
+        self.label.frame = CGRectMake(0,0,self.bounds.size.width-buttonWidth-buttonWidth-10,self.bounds.size.height);
     } else {
-        toggleButton.frame = CGRectMake(self.bounds.size.width-buttonWidth,0,buttonWidth,self.bounds.size.height);
-        label.frame = CGRectMake(0,0,self.bounds.size.width-buttonWidth-5,self.bounds.size.height);
+        self.toggleButton.frame = CGRectMake(self.bounds.size.width-buttonWidth,0,buttonWidth,self.bounds.size.height);
+        self.label.frame = CGRectMake(0,0,self.bounds.size.width-buttonWidth-5,self.bounds.size.height);
     }
 }
 
@@ -163,20 +163,20 @@
 
 -(void)start {
     if (self.running == NO) {
-        startDate = [NSDate date];
+        self.startDate = [NSDate date];
         
         NSTimeInterval timerInterval = 0.1;
         if (self.showMilliseconds == YES) {
             timerInterval = 0.001;
         }
-        timer = [NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(update) userInfo:nil repeats:YES];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(update) userInfo:nil repeats:YES];
     }
 }
 
 -(void)stop {
     if (self.running == YES) {
-        [timer invalidate];
-        timer = nil;
+        [self.timer invalidate];
+        self.timer = nil;
     }
 }
 
@@ -187,14 +187,14 @@
         [self start];
     }
     
-    [toggleButton removeFromSuperview];
+    [self.toggleButton removeFromSuperview];
     if (self.running == YES) {
-        toggleButton = [BButton awesomeButtonWithOnlyIcon:FAPause type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
+        self.toggleButton = [BButton awesomeButtonWithOnlyIcon:FAPause type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
     } else {
-        toggleButton = [BButton awesomeButtonWithOnlyIcon:FAPlay type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
+        self.toggleButton = [BButton awesomeButtonWithOnlyIcon:FAPlay type:BButtonTypeDefault style:BButtonStyleBootstrapV3];
     }
-    [toggleButton addTarget:self action:@selector(toggle) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:toggleButton];
+    [self.toggleButton addTarget:self action:@selector(toggle) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.toggleButton];
 }
 
 -(void)reset {
